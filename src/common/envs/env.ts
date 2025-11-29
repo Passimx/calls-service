@@ -1,5 +1,4 @@
 import * as process from 'process';
-import { join } from 'path';
 import { config } from 'dotenv';
 import { NumbersUtils } from '../utils/numbers.utils';
 import { BooleanUtils } from './boolean.utils';
@@ -13,18 +12,11 @@ export const Envs = {
     },
 
     kafka: {
-        host: process.env.KAFKA_HOST,
-        port: process.env.KAFKA_EXTERNAL_PORT,
-        user: String(process.env.KAFKA_CLIENT_USERS),
-        password: String(process.env.KAFKA_USER_PASSWORD),
+        host: process.env.KAFKA_HOST || 'kafka',
+        port: NumbersUtils.toNumberOrDefault(process.env.KAFKA_EXTERNAL_PORT, 9094),
+        user: process.env.KAFKA_CLIENT_USERS || 'user',
+        password: process.env.KAFKA_USER_PASSWORD || 'bitnami',
         kafkaIsConnect: BooleanUtils.strToBoolWithDefault(process.env.KAFKA_IS_CONNECT, false),
-    },
-
-    webdav: {
-        host: process.env.WEBDAV_HOST,
-        port: process.env.WEBDAV_PORT,
-        user: String(process.env.USER_NAME_WEBDAV),
-        password: String(process.env.PASSWORD_WEBDAV),
     },
 
     swagger: {
@@ -32,9 +24,5 @@ export const Envs = {
         isWriteConfig: BooleanUtils.strToBoolWithDefault(process.env.SWAGGER_IS_WRITE_CONFIG, false),
         url: `http://localhost:${process.env.APP_PORT ?? 3000}`,
         description: 'development',
-    },
-
-    vosk: {
-        path: join(process.cwd(), process.env.VOSK_MODEL_PATH || 'vosk-model-small-ru-0.22'),
-    },
+    }
 };

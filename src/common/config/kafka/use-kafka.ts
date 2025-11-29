@@ -1,12 +1,15 @@
 import { Transport } from '@nestjs/microservices';
-import { NestFastifyApplication } from '@nestjs/platform-fastify';
+import { INestApplication } from '@nestjs/common';
 import { Envs } from '../../envs/env';
 
-export async function useKafka(app: NestFastifyApplication) {
+
+export async function useKafka(app: INestApplication) {
     if (Envs.kafka.kafkaIsConnect) {
         app.connectMicroservice({
+            name: 'CLIENT_KAFKA',
             transport: Transport.KAFKA,
             options: {
+                createTopics: true,
                 client: {
                     brokers: [`${Envs.kafka.host}:${Envs.kafka.port}`],
                     sasl: {
@@ -16,8 +19,7 @@ export async function useKafka(app: NestFastifyApplication) {
                     },
                 },
                 consumer: {
-                    groupId: 'file-service-group',
-                    allowAutoTopicCreation: true,
+                    groupId: 'media-service',
                 },
             },
         });

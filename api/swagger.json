@@ -1,103 +1,11 @@
 {
 	"openapi": "3.0.0",
-	"paths": {
-		"/files/upload": {
-			"post": {
-				"operationId": "FilesController_upload",
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/UploadDto"
-							}
-						}
-					}
-				},
-				"responses": {
-					"200": {
-						"description": "",
-						"content": {
-							"application/json": {
-								"schema": {
-									"properties": {
-										"success": {
-											"type": "boolean",
-											"example": true
-										},
-										"data": {
-											"properties": {
-												"fileId": {
-													"type": "string"
-												}
-											},
-											"required": [
-												"fileId"
-											]
-										}
-									}
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Files"
-				]
-			}
-		},
-		"/files/{chatId}/{fileId}": {
-			"get": {
-				"operationId": "FilesController_downFile",
-				"parameters": [
-					{
-						"name": "chatId",
-						"required": true,
-						"in": "path",
-						"description": "Chat ID",
-						"schema": {
-							"type": "string"
-						}
-					},
-					{
-						"name": "fileId",
-						"required": true,
-						"in": "path",
-						"description": "File ID",
-						"schema": {
-							"type": "string"
-						}
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "Returns the file as Buffer",
-						"content": {
-							"application/octet-stream": {
-								"schema": {
-									"type": "string",
-									"format": "binary"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Files"
-				]
-			}
-		}
-	},
+	"paths": {},
 	"info": {
-		"title": "passim-file-service",
+		"title": "notifications-service",
 		"description": "",
 		"version": "0.0.1",
-		"contact": {},
-		"license": {
-			"name": "UNLICENSED",
-			"url": "https://github.com/ramzini22"
-		}
+		"contact": {}
 	},
 	"tags": [],
 	"servers": [
@@ -107,55 +15,6 @@
 		}
 	],
 	"components": {
-		"schemas": {
-			"UploadDto": {
-				"type": "object",
-				"properties": {
-					"chatId": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"chatId"
-				]
-			},
-			"DataResponse": {
-				"type": "object",
-				"properties": {
-					"success": {
-						"type": "boolean"
-					},
-					"data": {
-						"type": "object"
-					}
-				},
-				"required": [
-					"success",
-					"data"
-				]
-			},
-			"MessageDto": {
-				"type": "object",
-				"properties": {
-					"to": {
-						"type": "string"
-					},
-					"event": {
-						"type": "string",
-						"enum": [
-							"audio_transcribed"
-						]
-					},
-					"data": {
-						"$ref": "#/components/schemas/DataResponse"
-					}
-				},
-				"required": [
-					"to",
-					"event",
-					"data"
-				]
-			}
-		}
+		"schemas": {}
 	}
 }

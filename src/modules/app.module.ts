@@ -1,7 +1,8 @@
 import { Module } from '@nestjs/common';
-import { FilesModule } from './files/files.module';
+import { QueueModule } from './queue/queue.module';
+import { MediasoupModule } from './mediasoup/mediasoup.module';
 
 @Module({
-    imports: [FilesModule],
+    imports: [QueueModule, MediasoupModule],
 })
 export class AppModule {}
