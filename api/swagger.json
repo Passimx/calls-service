@@ -1,6 +1,126 @@
 {
 	"openapi": "3.0.0",
-	"paths": {},
+	"paths": {
+		"/media/room": {
+			"post": {
+				"operationId": "MediaController_createOrGetRoom",
+				"parameters": [],
+				"responses": {
+					"201": {
+						"description": ""
+					}
+				},
+				"tags": [
+					"Media"
+				]
+			}
+		},
+		"/media/transport/{roomId}": {
+			"post": {
+				"operationId": "MediaController_createTransport",
+				"parameters": [
+					{
+						"name": "roomId",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"201": {
+						"description": ""
+					}
+				},
+				"tags": [
+					"Media"
+				]
+			}
+		},
+		"/media/transport/{transportId}/connect": {
+			"post": {
+				"operationId": "MediaController_connectTransport",
+				"parameters": [
+					{
+						"name": "transportId",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"201": {
+						"description": ""
+					}
+				},
+				"tags": [
+					"Media"
+				]
+			}
+		},
+		"/media/producer": {
+			"post": {
+				"operationId": "MediaController_createProducer",
+				"parameters": [],
+				"responses": {
+					"201": {
+						"description": ""
+					}
+				},
+				"tags": [
+					"Media"
+				]
+			}
+		},
+		"/media/consumer": {
+			"post": {
+				"operationId": "MediaController_createConsumer",
+				"parameters": [],
+				"responses": {
+					"201": {
+						"description": ""
+					}
+				},
+				"tags": [
+					"Media"
+				]
+			}
+		},
+		"/media/room/{roomId}/producers": {
+			"get": {
+				"operationId": "MediaController_getRoomProducers",
+				"parameters": [
+					{
+						"name": "roomId",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "excludePeerId",
+						"required": true,
+						"in": "query",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": ""
+					}
+				},
+				"tags": [
+					"Media"
+				]
+			}
+		}
+	},
 	"info": {
 		"title": "notifications-service",
 		"description": "",

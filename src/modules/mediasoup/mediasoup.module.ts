@@ -1,11 +1,15 @@
 import { Module } from '@nestjs/common';
-import { MediasoupService } from './mediasoup.service';
-import { MediaController } from './media.controller';
+import { MediasoupService } from './service/mediasoup.service';
+import { RoomService } from './service/room.service';
+import { TransportService } from './service/transport.service';
+import { ProducerConsumerService } from './service/producer-consumer.service';
+import { MediaController } from './controller/media.controller';
+import { QueueModule } from '../queue/queue.module';
 
 @Module({
-    providers: [MediasoupService],
+    imports: [QueueModule],
+    providers: [MediasoupService, RoomService, TransportService, ProducerConsumerService],
     controllers: [MediaController],
-    exports: [MediasoupService],
+    exports: [MediasoupService, RoomService, TransportService, ProducerConsumerService],
 })
 export class MediasoupModule {}
-

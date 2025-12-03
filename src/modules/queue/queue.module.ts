@@ -1,14 +1,14 @@
 import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { Envs } from '../../common/envs/env';
-
+import { QueueService } from './queue.service';
+import { InjectEnum } from './type/inject.enum';
 
 @Module({
-
     imports: [
         ClientsModule.register([
             {
-                name: 'media-service',
+                name: InjectEnum.MEDIA_CALLS_MICROSERVICE,
                 transport: Transport.KAFKA,
                 options: {
                     client: {
@@ -20,6 +20,7 @@ import { Envs } from '../../common/envs/env';
             },
         ]),
     ],
-
+    providers: [QueueService],
+    exports: [QueueService],
 })
 export class QueueModule {}
