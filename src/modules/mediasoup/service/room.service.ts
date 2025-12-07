@@ -86,7 +86,7 @@ export class RoomService {
         const room = this.rooms.get(roomId);
         if (room) {
             room.router.close();
-            this.rooms.delete(roomId);
+        this.rooms.delete(roomId);
             this.logger.log(`Room ${roomId} removed`);
 
             // Отправляем событие в Kafka о завершении видеозвонка
@@ -147,7 +147,7 @@ export class RoomService {
         this.closeAll(peer.producers.values());
         this.closeAll(peer.transports.values());
 
-        room.peers.delete(peerId);
+            room.peers.delete(peerId);
         this.logger.log(`Peer ${peerId} removed from room ${roomId}. Remaining peers: ${room.peers.size}`);
 
         // Отправляем событие в Kafka о выходе участника

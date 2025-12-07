@@ -5,11 +5,62 @@
 			"post": {
 				"operationId": "MediaController_createOrGetRoom",
 				"parameters": [],
-				"responses": {
-					"201": {
-						"description": ""
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateRoomDto"
+							}
+						}
 					}
 				},
+				"responses": {
+					"200": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"anyOf": [
+										{
+											"type": "object",
+											"properties": {
+												"success": {
+													"type": "boolean",
+													"example": true
+												},
+												"data": {
+													"$ref": "#/components/schemas/RoomResponseDto"
+												}
+											},
+											"required": [
+												"success",
+												"data"
+											]
+										},
+										{
+											"type": "object",
+											"properties": {
+												"success": {
+													"type": "boolean",
+													"example": false
+												},
+												"data": {
+													"type": "string"
+												}
+											},
+											"required": [
+												"success",
+												"data"
+											]
+										}
+									]
+								}
+							}
+						}
+					}
+				},
+				"summary": "Создать или получить комнату",
 				"tags": [
 					"Media"
 				]
@@ -23,16 +74,68 @@
 						"name": "roomId",
 						"required": true,
 						"in": "path",
+						"description": "ID комнаты",
 						"schema": {
 							"type": "string"
 						}
 					}
 				],
-				"responses": {
-					"201": {
-						"description": ""
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateTransportDto"
+							}
+						}
 					}
 				},
+				"responses": {
+					"200": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"anyOf": [
+										{
+											"type": "object",
+											"properties": {
+												"success": {
+													"type": "boolean",
+													"example": true
+												},
+												"data": {
+													"$ref": "#/components/schemas/TransportResponseDto"
+												}
+											},
+											"required": [
+												"success",
+												"data"
+											]
+										},
+										{
+											"type": "object",
+											"properties": {
+												"success": {
+													"type": "boolean",
+													"example": false
+												},
+												"data": {
+													"type": "string"
+												}
+											},
+											"required": [
+												"success",
+												"data"
+											]
+										}
+									]
+								}
+							}
+						}
+					}
+				},
+				"summary": "Создать WebRTC транспорт",
 				"tags": [
 					"Media"
 				]
@@ -46,16 +149,68 @@
 						"name": "transportId",
 						"required": true,
 						"in": "path",
+						"description": "ID транспорта",
 						"schema": {
 							"type": "string"
 						}
 					}
 				],
-				"responses": {
-					"201": {
-						"description": ""
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ConnectTransportDto"
+							}
+						}
 					}
 				},
+				"responses": {
+					"200": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"anyOf": [
+										{
+											"type": "object",
+											"properties": {
+												"success": {
+													"type": "boolean",
+													"example": true
+												},
+												"data": {
+													"$ref": "#/components/schemas/LeaveRoomResponseDto"
+												}
+											},
+											"required": [
+												"success",
+												"data"
+											]
+										},
+										{
+											"type": "object",
+											"properties": {
+												"success": {
+													"type": "boolean",
+													"example": false
+												},
+												"data": {
+													"type": "string"
+												}
+											},
+											"required": [
+												"success",
+												"data"
+											]
+										}
+									]
+								}
+							}
+						}
+					}
+				},
+				"summary": "Подключить транспорт",
 				"tags": [
 					"Media"
 				]
@@ -65,11 +220,62 @@
 			"post": {
 				"operationId": "MediaController_createProducer",
 				"parameters": [],
-				"responses": {
-					"201": {
-						"description": ""
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateProducerDto"
+							}
+						}
 					}
 				},
+				"responses": {
+					"200": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"anyOf": [
+										{
+											"type": "object",
+											"properties": {
+												"success": {
+													"type": "boolean",
+													"example": true
+												},
+												"data": {
+													"$ref": "#/components/schemas/ProducerResponseDto"
+												}
+											},
+											"required": [
+												"success",
+												"data"
+											]
+										},
+										{
+											"type": "object",
+											"properties": {
+												"success": {
+													"type": "boolean",
+													"example": false
+												},
+												"data": {
+													"type": "string"
+												}
+											},
+											"required": [
+												"success",
+												"data"
+											]
+										}
+									]
+								}
+							}
+						}
+					}
+				},
+				"summary": "Создать producer",
 				"tags": [
 					"Media"
 				]
@@ -79,11 +285,62 @@
 			"post": {
 				"operationId": "MediaController_createConsumer",
 				"parameters": [],
-				"responses": {
-					"201": {
-						"description": ""
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateConsumerDto"
+							}
+						}
 					}
 				},
+				"responses": {
+					"200": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"anyOf": [
+										{
+											"type": "object",
+											"properties": {
+												"success": {
+													"type": "boolean",
+													"example": true
+												},
+												"data": {
+													"$ref": "#/components/schemas/ConsumerResponseDto"
+												}
+											},
+											"required": [
+												"success",
+												"data"
+											]
+										},
+										{
+											"type": "object",
+											"properties": {
+												"success": {
+													"type": "boolean",
+													"example": false
+												},
+												"data": {
+													"type": "string"
+												}
+											},
+											"required": [
+												"success",
+												"data"
+											]
+										}
+									]
+								}
+							}
+						}
+					}
+				},
+				"summary": "Создать consumer",
 				"tags": [
 					"Media"
 				]
@@ -97,14 +354,16 @@
 						"name": "roomId",
 						"required": true,
 						"in": "path",
+						"description": "ID комнаты",
 						"schema": {
 							"type": "string"
 						}
 					},
 					{
 						"name": "excludePeerId",
-						"required": true,
+						"required": false,
 						"in": "query",
+						"description": "ID peer для исключения из списка",
 						"schema": {
 							"type": "string"
 						}
@@ -112,9 +371,50 @@
 				],
 				"responses": {
 					"200": {
-						"description": ""
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"anyOf": [
+										{
+											"type": "object",
+											"properties": {
+												"success": {
+													"type": "boolean",
+													"example": true
+												},
+												"data": {
+													"$ref": "#/components/schemas/ProducersListResponseDto"
+												}
+											},
+											"required": [
+												"success",
+												"data"
+											]
+										},
+										{
+											"type": "object",
+											"properties": {
+												"success": {
+													"type": "boolean",
+													"example": false
+												},
+												"data": {
+													"type": "string"
+												}
+											},
+											"required": [
+												"success",
+												"data"
+											]
+										}
+									]
+								}
+							}
+						}
 					}
 				},
+				"summary": "Получить список producers",
 				"tags": [
 					"Media"
 				]
@@ -128,16 +428,68 @@
 						"name": "roomId",
 						"required": true,
 						"in": "path",
+						"description": "ID комнаты",
 						"schema": {
 							"type": "string"
 						}
 					}
 				],
-				"responses": {
-					"201": {
-						"description": ""
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/LeaveRoomDto"
+							}
+						}
 					}
 				},
+				"responses": {
+					"200": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"anyOf": [
+										{
+											"type": "object",
+											"properties": {
+												"success": {
+													"type": "boolean",
+													"example": true
+												},
+												"data": {
+													"$ref": "#/components/schemas/LeaveRoomResponseDto"
+												}
+											},
+											"required": [
+												"success",
+												"data"
+											]
+										},
+										{
+											"type": "object",
+											"properties": {
+												"success": {
+													"type": "boolean",
+													"example": false
+												},
+												"data": {
+													"type": "string"
+												}
+											},
+											"required": [
+												"success",
+												"data"
+											]
+										}
+									]
+								}
+							}
+						}
+					}
+				},
+				"summary": "Выйти из комнаты",
 				"tags": [
 					"Media"
 				]
@@ -158,6 +510,281 @@
 		}
 	],
 	"components": {
-		"schemas": {}
+		"schemas": {
+			"RoomResponseDto": {
+				"type": "object",
+				"properties": {
+					"roomId": {
+						"type": "string",
+						"description": "ID комнаты"
+					},
+					"routerRtpCapabilities": {
+						"type": "object",
+						"description": "RTP capabilities роутера"
+					}
+				},
+				"required": [
+					"roomId",
+					"routerRtpCapabilities"
+				]
+			},
+			"CreateRoomDto": {
+				"type": "object",
+				"properties": {
+					"roomId": {
+						"type": "string",
+						"description": "ID комнаты"
+					},
+					"initiatorId": {
+						"type": "string",
+						"description": "ID инициатора звонка"
+					}
+				},
+				"required": [
+					"roomId"
+				]
+			},
+			"TransportResponseDto": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "string",
+						"description": "ID транспорта"
+					},
+					"iceParameters": {
+						"type": "object",
+						"description": "ICE параметры"
+					},
+					"iceCandidates": {
+						"type": "array",
+						"description": "ICE кандидаты"
+					},
+					"dtlsParameters": {
+						"type": "object",
+						"description": "DTLS параметры"
+					}
+				},
+				"required": [
+					"id",
+					"iceParameters",
+					"iceCandidates",
+					"dtlsParameters"
+				]
+			},
+			"CreateTransportDto": {
+				"type": "object",
+				"properties": {
+					"peerId": {
+						"type": "string",
+						"description": "ID peer"
+					},
+					"direction": {
+						"type": "string",
+						"description": "Направление транспорта",
+						"enum": [
+							"send",
+							"recv"
+						]
+					}
+				},
+				"required": [
+					"peerId",
+					"direction"
+				]
+			},
+			"LeaveRoomResponseDto": {
+				"type": "object",
+				"properties": {
+					"success": {
+						"type": "boolean",
+						"description": "Успешность операции"
+					},
+					"message": {
+						"type": "string",
+						"description": "Сообщение"
+					}
+				},
+				"required": [
+					"success",
+					"message"
+				]
+			},
+			"ConnectTransportDto": {
+				"type": "object",
+				"properties": {
+					"dtlsParameters": {
+						"type": "object",
+						"description": "DTLS параметры для подключения транспорта"
+					}
+				},
+				"required": [
+					"dtlsParameters"
+				]
+			},
+			"ProducerResponseDto": {
+				"type": "object",
+				"properties": {
+					"producerId": {
+						"type": "string",
+						"description": "ID producer"
+					}
+				},
+				"required": [
+					"producerId"
+				]
+			},
+			"CreateProducerDto": {
+				"type": "object",
+				"properties": {
+					"roomId": {
+						"type": "string",
+						"description": "ID комнаты"
+					},
+					"peerId": {
+						"type": "string",
+						"description": "ID peer"
+					},
+					"transportId": {
+						"type": "string",
+						"description": "ID транспорта"
+					},
+					"kind": {
+						"type": "string",
+						"description": "Тип медиа",
+						"enum": [
+							"audio",
+							"video"
+						]
+					},
+					"rtpParameters": {
+						"type": "object",
+						"description": "RTP параметры"
+					}
+				},
+				"required": [
+					"roomId",
+					"peerId",
+					"transportId",
+					"kind",
+					"rtpParameters"
+				]
+			},
+			"ConsumerResponseDto": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "string",
+						"description": "ID consumer"
+					},
+					"producerId": {
+						"type": "string",
+						"description": "ID producer"
+					},
+					"kind": {
+						"type": "string",
+						"description": "Тип медиа",
+						"enum": [
+							"audio",
+							"video"
+						]
+					},
+					"rtpParameters": {
+						"type": "object",
+						"description": "RTP параметры"
+					}
+				},
+				"required": [
+					"id",
+					"producerId",
+					"kind",
+					"rtpParameters"
+				]
+			},
+			"CreateConsumerDto": {
+				"type": "object",
+				"properties": {
+					"roomId": {
+						"type": "string",
+						"description": "ID комнаты"
+					},
+					"peerId": {
+						"type": "string",
+						"description": "ID peer"
+					},
+					"transportId": {
+						"type": "string",
+						"description": "ID транспорта"
+					},
+					"producerId": {
+						"type": "string",
+						"description": "ID producer"
+					},
+					"rtpCapabilities": {
+						"type": "object",
+						"description": "RTP capabilities"
+					}
+				},
+				"required": [
+					"roomId",
+					"peerId",
+					"transportId",
+					"producerId",
+					"rtpCapabilities"
+				]
+			},
+			"ProducerInfoDto": {
+				"type": "object",
+				"properties": {
+					"producerId": {
+						"type": "string",
+						"description": "ID producer"
+					},
+					"peerId": {
+						"type": "string",
+						"description": "ID peer"
+					},
+					"kind": {
+						"type": "string",
+						"description": "Тип медиа",
+						"enum": [
+							"audio",
+							"video"
+						]
+					}
+				},
+				"required": [
+					"producerId",
+					"peerId",
+					"kind"
+				]
+			},
+			"ProducersListResponseDto": {
+				"type": "object",
+				"properties": {
+					"producers": {
+						"description": "Список producers",
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/ProducerInfoDto"
+						}
+					}
+				},
+				"required": [
+					"producers"
+				]
+			},
+			"LeaveRoomDto": {
+				"type": "object",
+				"properties": {
+					"peerId": {
+						"type": "string",
+						"description": "ID peer для удаления из комнаты"
+					}
+				},
+				"required": [
+					"peerId"
+				]
+			}
+		}
 	}
 }
