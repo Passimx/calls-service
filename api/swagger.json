@@ -119,6 +119,29 @@
 					"Media"
 				]
 			}
+		},
+		"/media/room/{roomId}/leave": {
+			"post": {
+				"operationId": "MediaController_removePeerFromRooms",
+				"parameters": [
+					{
+						"name": "roomId",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"201": {
+						"description": ""
+					}
+				},
+				"tags": [
+					"Media"
+				]
+			}
 		}
 	},
 	"info": {

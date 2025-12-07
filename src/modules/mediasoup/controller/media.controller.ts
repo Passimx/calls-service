@@ -61,8 +61,18 @@ export class MediaController {
     }
 
     @Get('room/:roomId/producers')
-    async getRoomProducers(@Param('roomId') roomId: string, @Query('excludePeerId') excludePeerId?: string) {
+    getRoomProducers(@Param('roomId') roomId: string, @Query('excludePeerId') excludePeerId?: string) {
         const producers = this.roomService.getRoomProducers(roomId, excludePeerId);
         return { producers };
+    }
+
+    @Post('room/:roomId/leave')
+    removePeerFromRooms(@Param('roomId') roomId: string, @Body() body: { peerId: string }) {
+        this.roomService.removePeerFromRoom(roomId, body.peerId);
+
+        return {
+            success: true,
+            message: `Peer ${body.peerId} removed from room ${roomId}`,
+        };
     }
 }

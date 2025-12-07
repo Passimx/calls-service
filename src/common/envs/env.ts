@@ -8,7 +8,7 @@ config();
 export const Envs = {
     main: {
         host: '0.0.0.0',
-        appPort: NumbersUtils.toNumberOrDefault(process.env.FILES_SERVICE_APP_PORT, 6030),
+        appPort: NumbersUtils.toNumberOrDefault(process.env.FILES_SERVICE_APP_PORT, 6040),
     },
 
     kafka: {
@@ -24,5 +24,5 @@ export const Envs = {
         isWriteConfig: BooleanUtils.strToBoolWithDefault(process.env.SWAGGER_IS_WRITE_CONFIG, false),
         url: `http://localhost:${process.env.APP_PORT ?? 3000}`,
         description: 'development',
-    }
+    },
 };

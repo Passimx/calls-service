@@ -1,10 +1,10 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { MediasoupService } from './mediasoup.service';
 import { mediaCodecs } from '../media.config';
-import { Room } from './types/room.interface';
 import { QueueService } from '../../queue/queue.service';
 import { TopicsEnum } from '../../queue/type/topics.enum';
 import { DataResponse } from '../../queue/dto/data-response.dto';
+import { Room } from './types/room.interface';
+import { MediasoupService } from './mediasoup.service';
 
 @Injectable()
 export class RoomService {
@@ -18,7 +18,7 @@ export class RoomService {
 
     public async createRoom(roomId: string, initiatorId?: string): Promise<Room> {
         if (this.rooms.has(roomId)) {
-            return this.rooms.get(roomId)!;
+            return this.rooms.get(roomId);
         }
 
         const worker = this.mediasoupService.getWorker();
@@ -52,7 +52,10 @@ export class RoomService {
         return this.rooms;
     }
 
-    public getRoomProducers(roomId: string, excludePeerId?: string): Array<{ peerId: string; producerId: string; kind: string }> {
+    public getRoomProducers(
+        roomId: string,
+        excludePeerId?: string,
+    ): Array<{ peerId: string; producerId: string; kind: string }> {
         const room = this.rooms.get(roomId);
         if (!room) {
             return [];
@@ -119,18 +122,46 @@ export class RoomService {
         }
     }
 
-    public removePeerFromRoom(roomId: string, peerId: string) {
-        const room = this.rooms.get(roomId);
-        if (room && room.peers.has(peerId)) {
-            room.peers.delete(peerId);
-
-            // Отправляем событие в Kafka о выходе участника
-            this.sendVideoCallEvent(TopicsEnum.VIDEO_CALL_LEFT, {
-                roomId,
-                peerId,
-                timestamp: new Date().toISOString(),
-            });
+    private closeAll(items: Iterable<{ close: () => void }>) {
+        for (const item of items) {
+            item.close();
         }
+    }
+
+    public removePeerFromRoom(roomId: string, peerId: string): boolean {
+        const room = this.rooms.get(roomId);
+        if (!room) {
+            this.logger.warn(`Room ${roomId} not found when trying to remove peer ${peerId}`);
+            return false;
+        }
+
+        const peer = room.peers.get(peerId);
+        if (!peer) {
+            this.logger.warn(`Peer ${peerId} not found in room ${roomId}`);
+            return false;
+        }
+
+        this.logger.log(`Removing peer ${peerId} from room ${roomId}`);
+
+        this.closeAll(peer.consumers.values());
+        this.closeAll(peer.producers.values());
+        this.closeAll(peer.transports.values());
+
+        room.peers.delete(peerId);
+        this.logger.log(`Peer ${peerId} removed from room ${roomId}. Remaining peers: ${room.peers.size}`);
+
+        // Отправляем событие в Kafka о выходе участника
+        this.sendVideoCallEvent(TopicsEnum.VIDEO_CALL_LEFT, {
+            roomId,
+            peerId,
+            timestamp: new Date().toISOString(),
+        });
+
+        if (room.peers.size === 0) {
+            this.removeRoom(roomId);
+        }
+
+        return true;
     }
 
     private sendVideoCallEvent(topic: TopicsEnum, data: Record<string, unknown>): void {
@@ -140,7 +171,7 @@ export class RoomService {
                 success: true,
             };
             this.queueService.sendMessage(topic, message);
-            this.logger.log(`Video call event sent: ${topic} for room ${data.roomId}`);
+            this.logger.log(`Video call event sent: ${topic} for room ${String(data.roomId)}`);
         } catch (error) {
             this.logger.error(`Failed to send video call event ${topic}: ${error.message}`);
         }
