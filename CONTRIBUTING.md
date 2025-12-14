@@ -73,28 +73,15 @@ passim-media-calls/
 │   │   ├── mediasoup/          # Mediasoup module
 │   │   │   │
 │   │   │   ├── controller/     # REST API controllers
-│   │   │   │   └── media.controller.ts
 │   │   │   │
 │   │   │   ├── dto/            # Data Transfer Objects
-│   │   │   │   ├── requests/   # Request DTOs
-│   │   │   │   └── responses/  # Response DTOs
-│   │   │   │
+│   │   │   │   
 │   │   │   ├── service/        # Business logic
-│   │   │   │   ├── mediasoup.service.ts      # Worker management
-│   │   │   │   ├── room.service.ts           # Room management
-│   │   │   │   ├── transport.service.ts     # Transport management
-│   │   │   │   ├── producer-consumer.service.ts  # Stream management
-│   │   │   │   └── types/                   # TypeScript types
-│   │   │   │
-│   │   │   ├── media.config.ts              # Codec and transport configuration
-│   │   │   └── mediasoup.module.ts           # NestJS module
-│   │   │
+│   │   │   
 │   │   └── queue/              # Queue module (Kafka)
 │   │       ├── dto/            # Message DTOs
 │   │       ├── type/           # Types and enums
-│   │       ├── queue.service.ts
-│   │       └── queue.module.ts
-│   │
+│   │    
 │   ├── app.module.ts           # Root application module
 │   └── main.ts                 # Application entry point
 │
