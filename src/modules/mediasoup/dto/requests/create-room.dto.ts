@@ -7,7 +7,7 @@ export class CreateRoomDto {
     @IsNotEmpty()
     readonly roomId!: string;
 
-    @ApiProperty({ description: 'ID инициатора звонка ', required: false })
+    @ApiProperty({ description: 'ID инициатора звонка', required: false })
     @IsString()
     @IsOptional()
     readonly initiatorId?: string;
