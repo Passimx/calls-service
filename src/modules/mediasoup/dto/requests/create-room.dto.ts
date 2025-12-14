@@ -12,4 +12,3 @@ export class CreateRoomDto {
     @IsOptional()
     readonly initiatorId?: string;
 }
-
