@@ -1,14 +1,4 @@
-![License](https://img.shields.io/badge/license-MIT-blue)
-
-![Status](https://img.shields.io/badge/status-active-success)
-
-![Contributions](https://img.shields.io/badge/contributions-welcome-brightgreen)
-
-![Docker Automated build](https://img.shields.io/docker/automated/passimx/passim-media-calls?label=docker)
-
-![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen)
-
-![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/passimx/passim-media-calls/main.yml)
+![License](https://img.shields.io/badge/license-MIT-blue) ![Status](https://img.shields.io/badge/status-active-success) ![Contributions](https://img.shields.io/badge/contributions-welcome-brightgreen) ![Docker Automated build](https://img.shields.io/docker/automated/passimx/passim-media-calls?label=docker) ![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen) ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/passimx/passim-media-calls/main.yml)
 
 
 
@@ -96,19 +86,12 @@ See [https://opensource.org/license/MIT](https://opensource.org/license/MIT) for
 
 
 | Area           | Technologies Used                        |
-
 |----------------|------------------------------------------|
-
 | Framework      | NestJS                                   |
-
 | WebRTC         | Mediasoup                                |
-
 | Messaging      | Kafka (optional)                         |
-
 | API Documentation | Swagger                                |
-
 | Runtime        | Node.js                                  |
-
 | Containerization | Docker                                 |
 
 
