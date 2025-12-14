@@ -21,7 +21,7 @@ Thank you for your time and effort.
    ```bash
    git add .
    git commit -m "feature: mediasoup room management"
-   git push 
+   git push origin your-feature-name
    ```
 
 4. Push your branch and open a Pull Request to the `main` branch.
