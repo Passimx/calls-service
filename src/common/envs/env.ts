@@ -16,12 +16,13 @@ export const Envs = {
         port: NumbersUtils.toNumberOrDefault(process.env.KAFKA_EXTERNAL_PORT, 9094),
         user: process.env.KAFKA_CLIENT_USERS || 'user',
         password: process.env.KAFKA_USER_PASSWORD || 'bitnami',
-        kafkaIsConnect: BooleanUtils.strToBoolWithDefault(process.env.KAFKA_IS_CONNECT, false),
+        groupId: process.env.CHATS_SERVICE_KAFKA_GROUP_ID || 'calls-service',
+        kafkaIsConnect: BooleanUtils.strToBoolWithDefault(process.env.KAFKA_IS_CONNECT, true),
     },
 
     swagger: {
         path: process.env.SWAGGER_PATH || 'docs',
-        isWriteConfig: BooleanUtils.strToBoolWithDefault(process.env.SWAGGER_IS_WRITE_CONFIG, false),
+        isWriteConfig: BooleanUtils.strToBoolWithDefault(process.env.SWAGGER_IS_WRITE_CONFIG, true),
         url: `http://localhost:${process.env.APP_PORT ?? 3000}`,
         description: 'development',
     },

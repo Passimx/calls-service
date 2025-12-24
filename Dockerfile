@@ -11,7 +11,7 @@ RUN apk add --no-cache \
 
 WORKDIR /app
 COPY package*.json ./
-RUN npm ci --prefer-offline --no-audit --progress=false --loglevel=error
+RUN npm ci
 COPY . .
 RUN npm run build
 

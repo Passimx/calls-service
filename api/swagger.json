@@ -434,16 +434,6 @@
 						}
 					}
 				],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/LeaveRoomDto"
-							}
-						}
-					}
-				},
 				"responses": {
 					"200": {
 						"description": "",
@@ -499,7 +489,7 @@
 	"info": {
 		"title": "notifications-service",
 		"description": "",
-		"version": "0.0.1",
+		"version": "1.0.1",
 		"contact": {}
 	},
 	"tags": [],
@@ -771,18 +761,6 @@
 				},
 				"required": [
 					"producers"
-				]
-			},
-			"LeaveRoomDto": {
-				"type": "object",
-				"properties": {
-					"peerId": {
-						"type": "string",
-						"description": "ID peer для удаления из комнаты"
-					}
-				},
-				"required": [
-					"peerId"
 				]
 			}
 		}
