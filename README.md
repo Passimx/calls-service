@@ -119,5 +119,4 @@ The service provides RESTful API for managing media rooms, transports, and strea
 - `POST /media/room/:roomId/leave` — Leave room
 
 
-
 Full API documentation is available through Swagger after starting the service.
