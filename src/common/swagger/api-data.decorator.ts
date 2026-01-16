@@ -39,4 +39,3 @@ export function ApiData(type: Type, isArray = false) {
         }),
     );
 }
-
