@@ -6,7 +6,7 @@ import { ClientKafka } from '@nestjs/microservices';
 
 import { InjectEnum } from './type/inject.enum';
 import { TopicsEnum } from './type/topics.enum';
-import { DataResponse } from './dto/data-response.dto';
+import { MessageDto } from './dto/message.dto';
 import { Envs } from '../../common/envs/env';
 
 @Injectable()
@@ -24,7 +24,7 @@ export class QueueService {
         this.producer.connect().then(() => (this.isConnected = true));
     }
 
-    public sendMessage(topic: TopicsEnum, message: DataResponse<unknown>): void {
+    public sendMessage(topic: TopicsEnum, message: MessageDto<unknown>): void {
         if (!Envs.kafka.kafkaIsConnect || !this.isConnected) return;
 
         this.producer.send({ topic, messages: [{ value: JSON.stringify(message) }] });

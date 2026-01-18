@@ -2,7 +2,9 @@ import { Injectable, Logger } from '@nestjs/common';
 import { mediaCodecs } from '../media.config';
 import { QueueService } from '../../queue/queue.service';
 import { TopicsEnum } from '../../queue/type/topics.enum';
+import { MessageDto } from '../../queue/dto/message.dto';
 import { DataResponse } from '../../queue/dto/data-response.dto';
+import { EventsEnum } from '../../queue/type/events.enum';
 import { Room } from './types/room.interface';
 import { MediasoupService } from './mediasoup.service';
 
@@ -32,12 +34,11 @@ export class RoomService {
 
         this.logger.log(`Router created for room ${roomId}`);
 
-        // Отправляем событие в Kafka о начале видеозвонка
+        // Отправляем уведомление в чат - все участники чата получат уведомление
         if (initiatorId) {
-            this.sendVideoCallEvent(TopicsEnum.VIDEO_CALL_STARTED, {
+            this.sendVideoCallEvent(TopicsEnum.EMIT_TO_CHAT, roomId, EventsEnum.VIDEO_CALL_STARTED, {
                 roomId,
                 initiatorId,
-                timestamp: new Date().toISOString(),
             });
         }
 
@@ -86,13 +87,12 @@ export class RoomService {
         const room = this.rooms.get(roomId);
         if (room) {
             room.router.close();
-        this.rooms.delete(roomId);
+            this.rooms.delete(roomId);
             this.logger.log(`Room ${roomId} removed`);
 
             // Отправляем событие в Kafka о завершении видеозвонка
-            this.sendVideoCallEvent(TopicsEnum.VIDEO_CALL_ENDED, {
+            this.sendVideoCallEvent(TopicsEnum.EMIT_TO_CHAT, roomId, EventsEnum.VIDEO_CALL_ENDED, {
                 roomId,
-                timestamp: new Date().toISOString(),
             });
         }
     }
@@ -114,10 +114,9 @@ export class RoomService {
             });
 
             // Отправляем событие в Kafka о присоединении участника
-            this.sendVideoCallEvent(TopicsEnum.VIDEO_CALL_JOINED, {
+            this.sendVideoCallEvent(TopicsEnum.EMIT_TO_CHAT, roomId, EventsEnum.VIDEO_CALL_JOINED, {
                 roomId,
                 peerId,
-                timestamp: new Date().toISOString(),
             });
         }
     }
@@ -147,14 +146,13 @@ export class RoomService {
         this.closeAll(peer.producers.values());
         this.closeAll(peer.transports.values());
 
-            room.peers.delete(peerId);
+        room.peers.delete(peerId);
         this.logger.log(`Peer ${peerId} removed from room ${roomId}. Remaining peers: ${room.peers.size}`);
 
         // Отправляем событие в Kafka о выходе участника
-        this.sendVideoCallEvent(TopicsEnum.VIDEO_CALL_LEFT, {
+        this.sendVideoCallEvent(TopicsEnum.EMIT_TO_CHAT, roomId, EventsEnum.VIDEO_CALL_LEFT, {
             roomId,
             peerId,
-            timestamp: new Date().toISOString(),
         });
 
         if (room.peers.size === 0) {
@@ -164,16 +162,15 @@ export class RoomService {
         return true;
     }
 
-    private sendVideoCallEvent(topic: TopicsEnum, data: Record<string, unknown>): void {
+    private sendVideoCallEvent(topic: TopicsEnum, chatId: string, event: string, data: Record<string, unknown>): void {
         try {
-            const message: DataResponse<Record<string, unknown>> = {
-                data,
-                success: true,
-            };
+            const dataResponse = new DataResponse<Record<string, unknown>>(data, true);
+            const message = new MessageDto(chatId, event, dataResponse);
+
             this.queueService.sendMessage(topic, message);
-            this.logger.log(`Video call event sent: ${topic} for room ${String(data.roomId)}`);
+            this.logger.log(`Video call event sent: ${event} to chat ${chatId} for room ${String(data.roomId)}`);
         } catch (error) {
-            this.logger.error(`Failed to send video call event ${topic}: ${error.message}`);
+            this.logger.error(`Failed to send video call event ${event} to chat ${chatId}: ${error.message}`);
         }
     }
 }

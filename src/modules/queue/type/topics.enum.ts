@@ -1,6 +1,4 @@
 export enum TopicsEnum {
-    VIDEO_CALL_STARTED = 'video-call-started',
-    VIDEO_CALL_JOINED = 'video-call-joined',
-    VIDEO_CALL_LEFT = 'video-call-left',
-    VIDEO_CALL_ENDED = 'video-call-ended',
+    EMIT_TO_USER_ROOM = 'emit_to_user_room',
+    EMIT_TO_CHAT = 'emit_to_chat',
 }

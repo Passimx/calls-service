@@ -1,7 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import {  IsNotEmpty, IsObject, IsString } from 'class-validator';
+import { IsNotEmpty, IsObject, IsString } from 'class-validator';
 import { DataResponse } from './data-response.dto';
-
 
 export class MessageDto<T = unknown> {
     @IsString()
@@ -11,14 +10,14 @@ export class MessageDto<T = unknown> {
     @ApiProperty()
     @IsString()
     @IsNotEmpty()
-
-    readonly event: string
+    readonly event: string;
 
     @ApiProperty({ type: DataResponse })
     @IsObject()
     readonly data: DataResponse<T>;
 
-    constructor(event: string, data: DataResponse<T>) {
+    constructor(to: string, event: string, data: DataResponse<T>) {
+        this.to = to;
         this.event = event;
         this.data = data;
     }
