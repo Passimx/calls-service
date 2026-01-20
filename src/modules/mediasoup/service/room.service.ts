@@ -164,7 +164,7 @@ export class RoomService {
 
     private sendVideoCallEvent(topic: TopicsEnum, chatId: string, event: string, data: Record<string, unknown>): void {
         try {
-            const dataResponse = new DataResponse<Record<string, unknown>>(data, true);
+            const dataResponse = new DataResponse<Record<string, unknown>>(data);
             const message = new MessageDto(chatId, event, dataResponse);
 
             this.queueService.sendMessage(topic, message);
