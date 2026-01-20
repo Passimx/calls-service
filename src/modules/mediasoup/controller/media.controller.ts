@@ -15,6 +15,7 @@ import { ProducerResponseDto } from '../dto/responses/producer-response.dto';
 import { ConsumerResponseDto } from '../dto/responses/consumer-response.dto';
 import { ProducersListResponseDto } from '../dto/responses/producers-list-response.dto';
 import { LeaveRoomResponseDto } from '../dto/responses/leave-room-response.dto';
+import { DataResponse } from '../../queue/dto/data-response.dto';
 
 @ApiTags('Media')
 @Controller('media')
@@ -28,13 +29,13 @@ export class MediaController {
     @Post('room')
     @ApiOperation({ summary: 'Создать или получить комнату' })
     @ApiData(RoomResponseDto)
-    async createOrGetRoom(@Body() body: CreateRoomDto): Promise<RoomResponseDto> {
+    async createOrGetRoom(@Body() body: CreateRoomDto): Promise<DataResponse<RoomResponseDto>> {
         const room = await this.roomService.createRoom(body.roomId, body.initiatorId);
 
-        return {
+        return new DataResponse({
             roomId: room.id,
             routerRtpCapabilities: room.router.rtpCapabilities,
-        };
+        });
     }
 
     @Post('transport/:roomId')
@@ -44,8 +45,9 @@ export class MediaController {
     async createTransport(
         @Param('roomId') roomId: string,
         @Body() body: CreateTransportDto,
-    ): Promise<TransportResponseDto> {
-        return await this.transportService.createWebRtcTransport(roomId, body.peerId, body.direction);
+    ): Promise<DataResponse<TransportResponseDto>> {
+        const transportData = await this.transportService.createWebRtcTransport(roomId, body.peerId, body.direction);
+        return new DataResponse(transportData);
     }
 
     @Post('transport/:transportId/connect')
@@ -55,24 +57,25 @@ export class MediaController {
     async connectTransport(
         @Param('transportId') transportId: string,
         @Body() body: ConnectTransportDto,
-    ): Promise<{ success: boolean }> {
+    ): Promise<DataResponse<{ success: boolean }>> {
         await this.transportService.connectTransport(transportId, body.dtlsParameters);
-        return { success: true };
+        return new DataResponse({ success: true });
     }
 
     @Post('producer')
     @ApiOperation({ summary: 'Создать producer' })
     @ApiData(ProducerResponseDto)
-    async createProducer(@Body() body: CreateProducerDto): Promise<ProducerResponseDto> {
+    async createProducer(@Body() body: CreateProducerDto): Promise<DataResponse<ProducerResponseDto>> {
         const producerId = await this.producerConsumerService.createProducer(body);
-        return { producerId };
+        return new DataResponse({ producerId });
     }
 
     @Post('consumer')
     @ApiOperation({ summary: 'Создать consumer' })
     @ApiData(ConsumerResponseDto)
-    async createConsumer(@Body() body: CreateConsumerDto) {
-        return await this.producerConsumerService.createConsumer(body);
+    async createConsumer(@Body() body: CreateConsumerDto): Promise<DataResponse<ConsumerResponseDto>> {
+        const consumerData = await this.producerConsumerService.createConsumer(body);
+        return new DataResponse(consumerData);
     }
 
     @Get('room/:roomId/producers')
@@ -80,21 +83,27 @@ export class MediaController {
     @ApiParam({ name: 'roomId', description: 'ID комнаты' })
     @ApiQuery({ name: 'excludePeerId', required: false, description: 'ID peer для исключения из списка' })
     @ApiData(ProducersListResponseDto)
-    getRoomProducers(@Param('roomId') roomId: string, @Query('excludePeerId') excludePeerId?: string) {
+    getRoomProducers(
+        @Param('roomId') roomId: string,
+        @Query('excludePeerId') excludePeerId?: string,
+    ): DataResponse<ProducersListResponseDto> {
         const producers = this.roomService.getRoomProducers(roomId, excludePeerId);
-        return { producers };
+        return new DataResponse({ producers });
     }
 
     @Post('room/:roomId/leave')
     @ApiOperation({ summary: 'Выйти из комнаты' })
     @ApiParam({ name: 'roomId', description: 'ID комнаты' })
     @ApiData(LeaveRoomResponseDto)
-    removePeerFromRooms(@Param('roomId') roomId: string, @Body('peerId') peerId: string): LeaveRoomResponseDto {
+    removePeerFromRooms(
+        @Param('roomId') roomId: string,
+        @Body('peerId') peerId: string,
+    ): DataResponse<LeaveRoomResponseDto> {
         this.roomService.removePeerFromRoom(roomId, peerId);
 
-        return {
+        return new DataResponse({
             success: true,
             message: `Peer ${peerId} removed from room ${roomId}`,
-        };
+        });
     }
 }
