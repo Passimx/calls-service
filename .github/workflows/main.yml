@@ -9,7 +9,31 @@ on:
       - main
 
 jobs:
+  cleanup-tags:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Нужно для работы с тегами
+      
+      - name: Fetch all tags
+        run: git fetch --tags
+      
+      - name: Remove duplicate tag if exists (1.1.0)
+        run: |
+          if git rev-parse --verify "refs/tags/1.1.0" > /dev/null 2>&1; then
+            echo "Tag 1.1.0 exists, removing it..."
+            git tag -d 1.1.0 || true
+            git push origin :refs/tags/1.1.0 || true
+          else
+            echo "Tag 1.1.0 does not exist, skipping cleanup"
+          fi
+
   version:
+    needs: cleanup-tags
     uses: Passimx/ci-cd-workflows/.github/workflows/version.yml@main
     secrets:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
