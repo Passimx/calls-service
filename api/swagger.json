@@ -487,9 +487,9 @@
 		}
 	},
 	"info": {
-		"title": "notifications-service",
+		"title": "calls-service",
 		"description": "",
-		"version": "1.0.2",
+		"version": "1.1.0",
 		"contact": {}
 	},
 	"tags": [],

@@ -4,6 +4,7 @@ import type { Producer } from 'mediasoup/node/lib/ProducerTypes';
 import type { RtpParameters } from 'mediasoup/node/lib/rtpParametersTypes';
 import { RoomService } from './room.service';
 import { ConsumeParams, ProduceParams } from './types/producer-consumer.type';
+import type { Peer } from './types/room.interface';
 
 @Injectable()
 export class ProducerConsumerService {
@@ -31,12 +32,19 @@ export class ProducerConsumerService {
             throw new Error('Transport is closed');
         }
 
+        const existingProducer = this.findActiveProducer(peer, kind);
+        if (existingProducer) {
+            this.logger.log(`Producer ${existingProducer.id} already exists for peer ${peerId} (${kind})`);
+            return existingProducer.id;
+        }
+
         const producer = await transport.produce({
             kind,
             rtpParameters,
         });
 
         peer.producers.set(producer.id, producer);
+        this.bindProducerCleanup(peer, producer);
 
         this.logger.log(`Producer ${producer.id} created for peer ${peerId} (${kind})`);
 
@@ -117,5 +125,24 @@ export class ProducerConsumerService {
         }
 
         return null;
+    }
+
+    private findActiveProducer(peer: Peer, kind: Producer['kind']): Producer | null {
+        for (const producer of peer.producers.values()) {
+            if (!producer.closed && producer.kind === kind) {
+                return producer;
+            }
+        }
+
+        return null;
+    }
+
+    private bindProducerCleanup(peer: Peer, producer: Producer): void {
+        const removeProducer = () => {
+            peer.producers.delete(producer.id);
+        };
+
+        producer.on('transportclose', removeProducer);
+        producer.on('@close', removeProducer);
     }
 }
