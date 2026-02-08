@@ -112,12 +112,6 @@ export class RoomService {
                 producers: new Map(),
                 consumers: new Map(),
             });
-
-            // Отправляем событие в Kafka о присоединении участника
-            this.sendVideoCallEvent(TopicsEnum.EMIT_TO_CHAT, roomId, EventsEnum.VIDEO_CALL_JOINED, {
-                roomId,
-                peerId,
-            });
         }
     }
 
@@ -160,6 +154,21 @@ export class RoomService {
         }
 
         return true;
+    }
+
+    // Отправка в Kafka события о присоединении участника с продюсером
+    public notifyParticipantJoinedWithProducer(
+        roomId: string,
+        peerId: string,
+        producerId: string,
+        kind: string,
+    ): void {
+        this.sendVideoCallEvent(TopicsEnum.EMIT_TO_CHAT, roomId, EventsEnum.VIDEO_CALL_JOINED, {
+            roomId,
+            peerId,
+            producerId,
+            kind,
+        });
     }
 
     private sendVideoCallEvent(topic: TopicsEnum, chatId: string, event: string, data: Record<string, unknown>): void {

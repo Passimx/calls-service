@@ -46,6 +46,9 @@ export class ProducerConsumerService {
         peer.producers.set(producer.id, producer);
         this.bindProducerCleanup(peer, producer);
 
+        // Уведомляем участников чата через Kafka — можно сразу создавать consumer на этот продюсер
+        this.roomService.notifyParticipantJoinedWithProducer(roomId, peerId, producer.id, producer.kind);
+
         this.logger.log(`Producer ${producer.id} created for peer ${peerId} (${kind})`);
 
         return producer.id;
